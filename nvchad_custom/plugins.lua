@@ -4,11 +4,17 @@ local overrides = require("custom.configs.overrides")
 local plugins = {
 
   -- Override plugin definition options
-  { "Pocco81/auto-save.nvim", lazy = false },
+  { "Pocco81/auto-save.nvim",   lazy = false },
 
-  { "tpope/vim-fugitive",     lazy = false },
+  { "tpope/vim-fugitive",       lazy = false },
 
-  { "github/copilot.vim",     lazy = false },
+  { "github/copilot.vim",       lazy = false },
+
+  { "gptlang/CopilotChat.nvim", lazy = false },
+
+  { "mg979/vim-visual-multi",   lazy = false },
+
+  { "ggandor/leap.nvim",        lazy = false, },
 
   {
     "David-Kunz/cmp-npm",
@@ -103,6 +109,29 @@ local plugins = {
       require "custom.configs.conform"
     end,
   },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    cmd = "Telescope",
+    init = function()
+      require("core.utils").load_mappings "telescope"
+    end,
+    opts = function()
+      return require "custom.configs.telescope"
+    end,
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "telescope")
+      local telescope = require "telescope"
+      telescope.setup(opts)
+
+      -- load extensions
+      for _, ext in ipairs(opts.extensions_list) do
+        telescope.load_extension(ext)
+      end
+    end,
+  },
+
 
   -- To make a plugin not be loaded
   -- {

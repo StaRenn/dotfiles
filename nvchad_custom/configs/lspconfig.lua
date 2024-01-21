@@ -4,7 +4,7 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 local lspconfig = require "lspconfig"
 
 -- if you just want default config for the servers then put them in a table
-local servers = { "html", "cssls", "eslint", "stylelint_lsp" }
+local servers = { "html", "cssls", "eslint", "stylelint_lsp", "cssmodules_ls" }
 
 local function filter(arr, fn)
   if type(arr) ~= "table" then
@@ -25,6 +25,14 @@ local function filterStylesDTS(value)
   return string.match(value.targetUri, 'styles.d.ts') == nil
 end
 
+local function filterReactDTS(value)
+  return string.match(value.targetUri, 'react/index.d.ts') == nil
+end
+
+local function applyFilters(value)
+  return filterStylesDTS(value) and filterReactDTS(value)
+end
+
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -38,7 +46,7 @@ lspconfig.tsserver.setup {
   handlers = {
     ['textDocument/definition'] = function(err, result, method, ...)
       if vim.tbl_islist(result) then
-        local filtered_result = filter(result, filterStylesDTS)
+        local filtered_result = filter(result, applyFilters)
         return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
       end
 
