@@ -7,6 +7,10 @@ for _, plugin in pairs(enable_providers) do
   vim.cmd("runtime " .. plugin)
 end
 
+vim.api.nvim_create_user_command("Format", function()
+  require("conform").format({ async = true, lsp_fallback = true})
+end, { range = true })
+
 vim.opt.relativenumber = true
 vim.opt.swapfile = false
 vim.opt.autoread = true

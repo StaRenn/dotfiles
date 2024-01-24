@@ -7,6 +7,19 @@ M.telescope = {
   },
 }
 
+M.conform = {
+  n = {
+    ["<leader>fm"] = { "<cmd> Format <CR>", "Format" },
+  },
+}
+
+M.multi = {
+  n = {
+    ["<A-k>"] = { ":call vm#commands#add_cursor_up(0, v:count1) <CR>", "Add cursor up" },
+    ["<A-j>"] = { ":call vm#commands#add_cursor_down(0, v:count1) <CR>", "Add cursor down" },
+  }
+}
+
 M.leap = {
   n = {
     ["<leader>s"] = { "<Plug>(leap-forward)", "Leap forward" },
@@ -16,17 +29,17 @@ M.leap = {
 
 M.neotest = {
   n = {
-    ["<leader>tr"] = { ':lua require("neotest").run.run() <CR>', "Launch test"},
-    ["<leader>ts"] = { ':lua require("neotest").run.stop() <CR>', "Stop test"},
-    ["<leader>to"] = { ':lua require("neotest").output.open() <CR>', "Test output"},
-    ["<leader>tO"] = { ':lua require("neotest").output.open({enter = true}) <CR>', "Test output enter mode"},
-    ["<leader>ti"] = { ':lua require("neotest").summary.toggle() <CR>', "Test summary"},
+    ["<leader>tr"] = { ':lua require("neotest").run.run() <CR>', "Launch test" },
+    ["<leader>ts"] = { ':lua require("neotest").run.stop() <CR>', "Stop test" },
+    ["<leader>to"] = { ':lua require("neotest").output.open() <CR>', "Test output" },
+    ["<leader>tO"] = { ':lua require("neotest").output.open({enter = true}) <CR>', "Test output enter mode" },
+    ["<leader>ti"] = { ':lua require("neotest").summary.toggle() <CR>', "Test summary" },
   }
 }
 
 M.neotestPlaywright = {
   n = {
-    ["<leader>ta"] = { ':lua require("neotest").playwright.attachment() <CR>', "Launch test attachment"}
+    ["<leader>ta"] = { ':lua require("neotest").playwright.attachment() <CR>', "Launch test attachment" }
   }
 }
 
