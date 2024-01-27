@@ -8,6 +8,7 @@ M.treesitter = {
     "css",
     "javascript",
     "typescript",
+    "rust",
     "tsx",
     "c",
     "markdown",
@@ -27,12 +28,15 @@ M.mason = {
     "lua-language-server",
     "stylua",
 
+    -- rust
+    "rust-analyzer",
+    "codelldb",
+
     -- web dev stuff
     "typescript-language-server",
     "prettier",
     "cssmodules-language-server",
     "stylelint-lsp",
-    "vscode-langservers-extracted"
   },
 }
 

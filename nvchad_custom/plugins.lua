@@ -1,30 +1,87 @@
-local overrides = require("custom.configs.overrides")
+local overrides = require "custom.configs.overrides"
 
 ---@type NvPluginSpec[]
 local plugins = {
 
   -- Override plugin definition options
-  { "Pocco81/auto-save.nvim",   lazy = false },
+  { "Pocco81/auto-save.nvim", lazy = false },
 
-  { "tpope/vim-fugitive",       lazy = false },
+  { "tpope/vim-fugitive", lazy = false },
 
-  { "github/copilot.vim",       lazy = false },
+  { "github/copilot.vim", lazy = false },
 
   { "gptlang/CopilotChat.nvim", lazy = false },
 
-  { "mg979/vim-visual-multi",   lazy = false },
+  { "mg979/vim-visual-multi", lazy = false },
 
-  { "ggandor/leap.nvim",        lazy = false, },
+  { "ggandor/leap.nvim", lazy = false },
+
+  { "mfussenegger/nvim-dap", lazy = false },
+
+  { "rust-lang/rust.vim" },
+
+  {
+    "rcarriga/nvim-dap-ui",
+    config = function()
+      require("dapui").setup()
+    end,
+  },
+
+  {
+    "saecki/crates.nvim",
+    tag = "stable",
+    config = function()
+      require("crates").setup()
+    end,
+  },
+
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^4", -- Recommended
+    ft = { "rust" },
+    dependencies = { "williamboman/mason.nvim" },
+    init = function()
+      vim.g.rustaceanvim = function()
+        -- Update this path
+        local codelldb_root = require("mason-registry").get_package("codelldb"):get_install_path() .. "/extension/"
+        local codelldb_path = codelldb_root .. "adapter/codelldb"
+        local liblldb_path = codelldb_root .. "lldb/lib/liblldb"
+        local this_os = vim.loop.os_uname().sysname
+
+        -- The path is different on Windows
+        if this_os:find "Windows" then
+          codelldb_path = extension_path .. "adapter\\codelldb.exe"
+          liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+        else
+          -- The liblldb extension is .so for Linux and .dylib for MacOS
+          liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+        end
+
+        local cfg = require "rustaceanvim.config"
+        return {
+          dap = {
+            adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+            configuration = {
+              name = "Rust debug client",
+              type = "codelldb",
+              request = "launch",
+              stopOnEntry = false,
+            },
+          },
+        }
+      end
+    end,
+  },
 
   {
     "David-Kunz/cmp-npm",
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = { "nvim-lua/plenary.nvim" },
     ft = "json",
     config = function()
-      require('cmp-npm').setup({
+      require("cmp-npm").setup {
         only_semantic_versions = false,
-      })
-    end
+      }
+    end,
   },
 
   {
@@ -43,7 +100,8 @@ local plugins = {
         { name = "buffer" },
         { name = "nvim_lua" },
         { name = "path" },
-        { name = 'npm',     keyword_length = 4 },
+        { name = "crates" },
+        { name = "npm", keyword_length = 4 },
       }
 
       opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
@@ -79,7 +137,7 @@ local plugins = {
   -- override plugin configs
   {
     "williamboman/mason.nvim",
-    opts = overrides.mason
+    opts = overrides.mason,
   },
 
   {
@@ -131,21 +189,6 @@ local plugins = {
       end
     end,
   },
-
-
-  -- To make a plugin not be loaded
-  -- {
-  --   "NvChad/nvim-colorizer.lua",
-  --   enabled = false
-  -- },
-
-  -- All NvChad plugins are lazy-loaded by default
-  -- For a plugin to be loaded, you will need to set either `ft`, `cmd`, `keys`, `event`, or set `lazy = false`
-  -- If you want a plugin to load on startup, add `lazy = false` to a plugin spec, for example
-  -- {
-  --   "mg979/vim-visual-multi",
-  --   lazy = false,
-  -- }
 }
 
 return plugins

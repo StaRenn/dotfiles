@@ -1,0 +1,24 @@
+[user]
+	email         = MyEmail
+	name          = MyName
+[core]
+  pager         = delta
+  editor 		    = nvim
+  autocrlf 	    = false
+  safecrlf 	    = true
+  quotepath     = off
+[merge]
+  tool 		      = vimdiff
+  conflictstyle = diff3
+[pager]
+  diff          = delta
+  log           = delta
+  reflog        = delta
+  show          = delta
+[delta]
+  line-numbers  = true
+  navigate      = true
+[interactive]
+  diffFilter    = delta --color-only
+[pull]
+  rebase        = false
