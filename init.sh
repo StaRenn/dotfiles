@@ -6,8 +6,9 @@ case "$choice" in
   y|Y )
     read -p "Please enter your email: " email
     read -p "Please enter your name: " name
-    sed -i "s/MyEmail/$email/g" .gitconfig
-    sed -i "s/MyName/$name/g" .gitconfig
+    cp .gitconfig_template .gitconfig
+    sed -i '' "s/MyEmail/$email/g" .gitconfig
+    sed -i '' "s/MyName/$name/g" .gitconfig
     rm -rf ~/.gitconfig
     ln -s $PWD/.gitconfig ~/.gitconfig 
     echo "Gitconfig has been symlinked"
