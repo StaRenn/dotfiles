@@ -10,11 +10,7 @@ local plugins = {
 
   { "github/copilot.vim", lazy = false },
 
-  { "gptlang/CopilotChat.nvim", lazy = false },
-
   { "mg979/vim-visual-multi", lazy = false },
-
-  { "ggandor/leap.nvim", lazy = false },
 
   { "mfussenegger/nvim-dap", lazy = false },
 
@@ -188,6 +184,19 @@ local plugins = {
         telescope.load_extension(ext)
       end
     end,
+  },
+
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    opts = {
+      show_help = "yes", -- Show help text for CopilotChatInPlace, default: yes
+      debug = false, -- Enable or disable debug mode, the log file will be in ~/.local/state/nvim/CopilotChat.nvim.log
+      disable_extra_info = "no", -- Disable extra information (e.g: system prompt) in the response.
+    },
+    build = function()
+      vim.notify "Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim."
+    end,
+    lazy = false,
   },
 }
 

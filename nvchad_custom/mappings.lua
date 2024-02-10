@@ -20,6 +20,23 @@ M.multi = {
   },
 }
 
+M.copilotChat = {
+  n = {
+    ["<leader>ae"] = { "<cmd>CopilotChatExplain<cr>", "CopilotChat - Explain code" },
+    ["<leader>at"] = {
+      ":CopilotChat Generate tests for current code, output only code, without explanation <cr>",
+      "CopilotChat - Generate tests",
+    },
+    ["<leader>ac"] = { ":CopilotChat Review this code, how can i improve it? <cr>", "CopilotChat - Code review" },
+    ["<leader>ar"] = { ":CopilotChat Refactor this code <cr>", "CopilotChat - Refactor" },
+    ["<leader>ad"] = { ":CopilotChat Debug this code <cr>", "CopilotChat - Debug" },
+  },
+
+  x = {
+    ["<leader>ax"] = { ":CopilotChatInPlace<cr>", "CopilotChat - Run in-place code" },
+  },
+}
+
 M.dap = {
   n = {
     ["<leader>rd"] = { ":RustLsp debuggables <CR> 1 <CR>", "Dap debuggables" },
@@ -33,13 +50,6 @@ M.dap = {
       end,
       "Dap terminate",
     },
-  },
-}
-
-M.leap = {
-  n = {
-    ["<leader>s"] = { "<Plug>(leap-forward)", "Leap forward" },
-    ["<leader>a"] = { "<Plug>(leap-backward)", "Leap backward" },
   },
 }
 
@@ -74,7 +84,10 @@ M.fugitive = {
 M.other = {
   n = {
     ["K"] = { ":lua vim.lsp.buf.hover() <CR>", "LSP hover" },
-    ["<leader>ra"] = { ':lua require("nvchad.renamer").open() <CR>', "LSP rename" },
+    ["<leader>ra"] = {
+      ':lua require("nvchad.renamer").open() require("cmp").setup.buffer { enabled = false } <CR>',
+      "LSP rename",
+    },
   },
 }
 

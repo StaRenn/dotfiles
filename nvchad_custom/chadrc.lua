@@ -20,6 +20,16 @@ M.ui = {
   },
 }
 
+M.lazy_nvim = {
+  performance = {
+    rtp = {
+      disabled_plugins = vim.tbl_filter(function(name)
+        return name ~= "rplugin"
+      end, require("plugins.configs.lazy_nvim").performance.rtp.disabled_plugins),
+    },
+  },
+}
+
 M.plugins = "custom.plugins"
 
 -- check core.mappings for table structure
