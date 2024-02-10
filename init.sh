@@ -70,3 +70,16 @@ case "$choice" in
   
   * ) echo "Invalid input." ;;
 esac
+
+read -p "Do you want to symlink kitty config? It will delete your current kitty config (y/n) " choice
+
+case "$choice" in
+  y|Y )
+    rm -rf ~/.config/kitty
+    ln -s $PWD/kitty ~/.config/kitty
+    echo "Kitty config has been symlinked"
+    ;;
+  n|N ) echo "Skipped." ;;
+  
+  * ) echo "Invalid input." ;;
+esac
