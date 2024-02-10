@@ -1,12 +1,12 @@
 ### Terminal dependencies to install manually
 - zsh
-- oh my zsh
 - zsh-syntax-highlighting
 - tmux
 - zoxide
 - starship
 - exa
 - neovim
+- ranger
 
 ### Essentials to install manually
 - git

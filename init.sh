@@ -7,9 +7,10 @@ case "$choice" in
     read -p "Please enter your email: " email
     read -p "Please enter your name: " name
     cp .gitconfig_template .gitconfig
-    sed -i '' "s/MyEmail/$email/g" .gitconfig
-    sed -i '' "s/MyName/$name/g" .gitconfig
-    rm -rf ~/.gitconfig
+    sed "s/MyEmail/$email/g" .gitconfig > .gitconfig_temp
+    sed "s/MyName/$name/g" .gitconfig_temp > .gitconfig
+    rm .gitconfig_temp
+    rm ~/.gitconfig
     ln -s $PWD/.gitconfig ~/.gitconfig 
     echo "Gitconfig has been symlinked"
     ;;
@@ -38,6 +39,32 @@ case "$choice" in
     rm -rf ~/.config/nvim/lua/custom
     ln -s $PWD/nvchad_custom ~/.config/nvim/lua/custom
     echo "NvChad custom config has been symlinked"
+    ;;
+  n|N ) echo "Skipped." ;;
+  
+  * ) echo "Invalid input." ;;
+esac
+
+read -p "Do you want to symlink .zshrc config? It will delete your current .zshrc (y/n) " choice
+
+case "$choice" in
+  y|Y )
+    rm ~/.zshrc
+    ln -s $PWD/.zshrc ~/.zshrc
+    echo ".zshrc has been symlinked"
+    ;;
+  n|N ) echo "Skipped." ;;
+  
+  * ) echo "Invalid input." ;;
+esac
+
+read -p "Do you want to symlink ranger config? It will delete your current ranger config (y/n) " choice
+
+case "$choice" in
+  y|Y )
+    rm -rf ~/.config/ranger
+    ln -s $PWD/ranger ~/.config/ranger
+    echo "Ranger config has been symlinked"
     ;;
   n|N ) echo "Skipped." ;;
   
