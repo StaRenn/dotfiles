@@ -22,6 +22,7 @@ local options = {
 		vimgrep_arguments = {
 			"rg",
 			"-L",
+      "-P",
 			"--color=never",
 			"--no-heading",
 			"--with-filename",

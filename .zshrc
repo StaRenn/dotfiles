@@ -13,6 +13,7 @@ source <(antidote init)
 
 antidote bundle zsh-users/zsh-autosuggestions
 antidote bundle zsh-users/zsh-syntax-highlighting
+antidote bundle zsh-users/zsh-completions
 
 #HISTORY
 HISTFILE=~/.zsh_history
