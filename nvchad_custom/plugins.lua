@@ -4,7 +4,15 @@ local overrides = require("custom.configs.overrides")
 local plugins = {
 
 	-- Override plugin definition options
-	{ "Pocco81/auto-save.nvim", lazy = false },
+	{
+		"okuuva/auto-save.nvim",
+		event = { "InsertLeave", "TextChanged" },
+		lazy = false,
+		opts = {
+      debounce_delay = 100,
+			enabled = true,
+		},
+	},
 
 	{ "tpope/vim-fugitive", lazy = false },
 
@@ -154,6 +162,16 @@ local plugins = {
 		opts = overrides.nvimtree,
 	},
 
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "User FilePost",
+    opts = overrides.gitsigns,
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "git")
+      require("gitsigns").setup(opts)
+    end,
+  },
+
 	-- Install a plugin
 	{
 		"max397574/better-escape.nvim",
@@ -209,6 +227,40 @@ local plugins = {
 		},
 		lazy = false,
 		-- See Commands section for default commands if you want to lazy load on them
+	},
+
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		lazy = false,
+		init = function()
+			local rainbow_delimiters = require("rainbow-delimiters")
+
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+					vim = rainbow_delimiters.strategy["local"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+					lua = "rainbow-blocks",
+					javascript = "rainbow-parens",
+					tsx = "rainbow-parens",
+				},
+				priority = {
+					[""] = 110,
+					lua = 210,
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
+			}
+		end,
 	},
 }
 
