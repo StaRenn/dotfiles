@@ -82,14 +82,4 @@ M.fugitive = {
 	},
 }
 
-M.other = {
-	n = {
-		["K"] = { ":lua vim.lsp.buf.hover() <CR>", "LSP hover" },
-		["<leader>ra"] = {
-			':lua require("nvchad.renamer").open() require("cmp").setup.buffer { enabled = false } <CR>',
-			"LSP rename",
-		},
-	},
-}
-
 return M

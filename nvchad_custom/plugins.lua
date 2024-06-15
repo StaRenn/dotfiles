@@ -9,7 +9,7 @@ local plugins = {
 		event = { "InsertLeave", "TextChanged" },
 		lazy = false,
 		opts = {
-      debounce_delay = 100,
+			debounce_delay = 100,
 			enabled = true,
 		},
 	},
@@ -40,45 +40,6 @@ local plugins = {
 		tag = "stable",
 		config = function()
 			require("crates").setup()
-		end,
-	},
-
-	{
-		"mrcjkb/rustaceanvim",
-		version = "^4", -- Recommended
-		ft = { "rust" },
-		dependencies = { "williamboman/mason.nvim" },
-		init = function()
-			vim.g.rustaceanvim = function()
-				-- Update this path
-				local codelldb_root = require("mason-registry").get_package("codelldb"):get_install_path()
-					.. "/extension/"
-				local codelldb_path = codelldb_root .. "adapter/codelldb"
-				local liblldb_path = codelldb_root .. "lldb/lib/liblldb"
-				local this_os = vim.loop.os_uname().sysname
-
-				-- The path is different on Windows
-				if this_os:find("Windows") then
-					codelldb_path = extension_path .. "adapter\\codelldb.exe"
-					liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
-				else
-					-- The liblldb extension is .so for Linux and .dylib for MacOS
-					liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
-				end
-
-				local cfg = require("rustaceanvim.config")
-				return {
-					dap = {
-						adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
-						configuration = {
-							name = "Rust debug client",
-							type = "codelldb",
-							request = "launch",
-							stopOnEntry = false,
-						},
-					},
-				}
-			end
 		end,
 	},
 
@@ -153,6 +114,48 @@ local plugins = {
 	},
 
 	{
+		"mrcjkb/rustaceanvim",
+		version = "^4", -- Recommended
+		ft = { "rust" },
+		dependencies = { "williamboman/mason.nvim" },
+		init = function()
+			vim.g.rustaceanvim = function()
+				-- Update this path
+				local codelldb_root = require("mason-registry").get_package("codelldb"):get_install_path()
+					.. "/extension/"
+				local codelldb_path = codelldb_root .. "adapter/codelldb"
+				local liblldb_path = codelldb_root .. "lldb/lib/liblldb"
+				local this_os = vim.loop.os_uname().sysname
+
+				-- The path is different on Windows
+				if this_os:find("Windows") then
+					codelldb_path = extension_path .. "adapter\\codelldb.exe"
+					liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+				else
+					-- The liblldb extension is .so for Linux and .dylib for MacOS
+					liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+				end
+
+				local on_attach = require("plugins.configs.lspconfig").on_attach
+				local cfg = require("rustaceanvim.config")
+				local capabilities = require("plugins.configs.lspconfig").capabilities
+				return {
+					server = { on_attach = on_attach, capabilities = capabilities },
+					dap = {
+						adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+						configuration = {
+							name = "Rust debug client",
+							type = "codelldb",
+							request = "launch",
+							stopOnEntry = false,
+						},
+					},
+				}
+			end
+		end,
+	},
+
+	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = overrides.treesitter,
 	},
@@ -162,15 +165,15 @@ local plugins = {
 		opts = overrides.nvimtree,
 	},
 
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "User FilePost",
-    opts = overrides.gitsigns,
-    config = function(_, opts)
-      dofile(vim.g.base46_cache .. "git")
-      require("gitsigns").setup(opts)
-    end,
-  },
+	{
+		"lewis6991/gitsigns.nvim",
+		event = "User FilePost",
+		opts = overrides.gitsigns,
+		config = function(_, opts)
+			dofile(vim.g.base46_cache .. "git")
+			require("gitsigns").setup(opts)
+		end,
+	},
 
 	-- Install a plugin
 	{
