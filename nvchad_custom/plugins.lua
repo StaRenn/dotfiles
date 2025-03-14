@@ -20,7 +20,15 @@ local plugins = {
 
 	{ "tpope/vim-repeat", lazy = false },
 
-	{ "github/copilot.vim", lazy = false },
+	{
+		"zbirenbaum/copilot.lua",
+		lazy = false,
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup(overrides.copilot)
+		end,
+	},
 
 	{ "mg979/vim-visual-multi", lazy = false },
 
@@ -58,7 +66,6 @@ local plugins = {
 		"hrsh7th/nvim-cmp",
 		opts = function()
 			local opts = require("plugins.configs.cmp")
-			local cmp = require("cmp")
 
 			opts.completion = {
 				completeopt = "menu,menuone,noselect,noinsert",
@@ -73,27 +80,6 @@ local plugins = {
 				{ name = "crates" },
 				{ name = "npm", keyword_length = 4 },
 			}
-
-			opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
-				if cmp.visible() then
-					cmp.select_next_item()
-				else
-					local copilot_keys = vim.fn["copilot#Accept"]()
-					if copilot_keys ~= "" then
-						vim.api.nvim_feedkeys(copilot_keys, "i", true)
-					elseif require("luasnip").expand_or_jumpable() then
-						vim.fn.feedkeys(
-							vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true),
-							""
-						)
-					else
-						fallback()
-					end
-				end
-			end, {
-				"i",
-				"s",
-			})
 
 			return opts
 		end,
@@ -114,48 +100,6 @@ local plugins = {
 	},
 
 	{
-		"mrcjkb/rustaceanvim",
-		version = "^4", -- Recommended
-		ft = { "rust" },
-		dependencies = { "williamboman/mason.nvim" },
-		init = function()
-			vim.g.rustaceanvim = function()
-				-- Update this path
-				local codelldb_root = require("mason-registry").get_package("codelldb"):get_install_path()
-					.. "/extension/"
-				local codelldb_path = codelldb_root .. "adapter/codelldb"
-				local liblldb_path = codelldb_root .. "lldb/lib/liblldb"
-				local this_os = vim.loop.os_uname().sysname
-
-				-- The path is different on Windows
-				if this_os:find("Windows") then
-					codelldb_path = extension_path .. "adapter\\codelldb.exe"
-					liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
-				else
-					-- The liblldb extension is .so for Linux and .dylib for MacOS
-					liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
-				end
-
-				local on_attach = require("plugins.configs.lspconfig").on_attach
-				local cfg = require("rustaceanvim.config")
-				local capabilities = require("plugins.configs.lspconfig").capabilities
-				return {
-					server = { on_attach = on_attach, capabilities = capabilities },
-					dap = {
-						adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
-						configuration = {
-							name = "Rust debug client",
-							type = "codelldb",
-							request = "launch",
-							stopOnEntry = false,
-						},
-					},
-				}
-			end
-		end,
-	},
-
-	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = overrides.treesitter,
 	},
@@ -172,15 +116,6 @@ local plugins = {
 		config = function(_, opts)
 			dofile(vim.g.base46_cache .. "git")
 			require("gitsigns").setup(opts)
-		end,
-	},
-
-	-- Install a plugin
-	{
-		"max397574/better-escape.nvim",
-		event = "InsertEnter",
-		config = function()
-			require("better_escape").setup()
 		end,
 	},
 
@@ -219,7 +154,7 @@ local plugins = {
 		"CopilotC-Nvim/CopilotChat.nvim",
 		branch = "canary",
 		dependencies = {
-			{ "github/copilot.vim" }, -- or github/copilot.vim
+			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
 			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		},
 		opts = {
