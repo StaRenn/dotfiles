@@ -1,5 +1,5 @@
-local on_attach = require("plugins.configs.lspconfig").on_attach
-local capabilities = require("plugins.configs.lspconfig").capabilities
+local on_attach = require("nvchad.configs.lspconfig").on_attach
+local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
 
@@ -22,11 +22,11 @@ local function filter(arr, fn)
 end
 
 local function filterStylesDTS(value)
-  return string.match(value.targetUri, 'styles.d.ts') == nil
+  return string.match(value.targetUri, "styles.d.ts") == nil
 end
 
 local function filterReactDTS(value)
-  return string.match(value.targetUri, 'react/index.d.ts') == nil
+  return string.match(value.targetUri, "react/index.d.ts") == nil
 end
 
 local function applyFilters(value)
@@ -40,29 +40,42 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   handlers = {
-    ['textDocument/definition'] = function(err, result, method, ...)
+    ["textDocument/definition"] = function(err, result, method, ...)
       if vim.tbl_islist(result) then
         local filtered_result = filter(result, applyFilters)
-        return vim.lsp.handlers['textDocument/definition'](err, filtered_result, method, ...)
+        return vim.lsp.handlers["textDocument/definition"](err, filtered_result, method, ...)
       end
 
-      vim.lsp.handlers['textDocument/definition'](err, result, method, ...)
-    end
-  }
+      vim.lsp.handlers["textDocument/definition"](err, result, method, ...)
+    end,
+  },
 }
 
--- https://github.com/neovim/neovim/issues/18223
--- lspconfig.cssmodules_ls.setup {
---   on_attach = on_attach,
---   capabilities = capabilities,
---   init_options = {
---     camelCase = "dashes",
---   },
--- }
+lspconfig.rust_analyzer.setup {
+  on_attach = on_attach,
+  settings = {
+    ["rust-analyzer"] = {
+      imports = {
+        granularity = {
+          group = "module",
+        },
+        prefix = "self",
+      },
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = true,
+      },
+    },
+  },
+}
 
 lspconfig.jsonls.setup {
   on_attach = on_attach,
