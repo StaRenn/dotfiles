@@ -40,7 +40,7 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   handlers = {
@@ -55,14 +55,27 @@ lspconfig.tsserver.setup {
   }
 }
 
--- https://github.com/neovim/neovim/issues/18223
--- lspconfig.cssmodules_ls.setup {
---   on_attach = on_attach,
---   capabilities = capabilities,
---   init_options = {
---     camelCase = "dashes",
---   },
--- }
+lspconfig.rust_analyzer.setup({
+    on_attach = on_attach,
+    settings = {
+        ["rust-analyzer"] = {
+            imports = {
+                granularity = {
+                    group = "module",
+                },
+                prefix = "self",
+            },
+            cargo = {
+                buildScripts = {
+                    enable = true,
+                },
+            },
+            procMacro = {
+                enable = true
+            },
+        }
+    }
+})
 
 lspconfig.jsonls.setup {
   on_attach = on_attach,
