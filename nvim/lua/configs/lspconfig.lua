@@ -6,9 +6,6 @@ local lspconfig = require "lspconfig"
 -- if you just want default config for the servers then put them in a table
 local servers = { "html", "cssls", "eslint", "stylelint_lsp", "cssmodules_ls" }
 
-local diagnostics = require "configs.diagnostics"
-diagnostics.setup()
-
 local function filter(arr, fn)
   if type(arr) ~= "table" then
     return arr

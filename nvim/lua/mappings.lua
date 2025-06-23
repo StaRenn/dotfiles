@@ -43,6 +43,32 @@ map("n", "<leader>rt", function()
   require("dapui").close()
 end, { desc = "Dap terminate" })
 
+-- Diagnostics mappings
+map("n", "]d", function()
+  vim.diagnostic.goto_next()
+  vim.diagnostic.open_float(nil)
+end)
+
+map("n", "[d", function()
+  vim.diagnostic.goto_prev()
+  vim.diagnostic.open_float(nil)
+end)
+
+map("n", "K", function()
+  local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+
+  if #diagnostics > 0 then
+    vim.diagnostic.open_float(nil)
+  else
+    vim.lsp.buf.hover()
+  end
+end, { desc = "Hover with diagnostics priority" })
+
+-- lsp
+map("n", "ca", function()
+  vim.lsp.buf.code_action()
+end, { desc = "LSP Code Action" })
+
 -- Fugitive mappings
 map("n", "<leader>gg", "<cmd> Git <CR>", { desc = "Git status" })
 map("n", "<leader>gc", "<cmd> Git commit <CR>", { desc = "Git commit" })
