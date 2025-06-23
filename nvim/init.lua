@@ -25,6 +25,13 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
+vim.diagnostic.config {
+  float = {
+    source = 'always',
+    border = 'rounded'
+  },
+}
+
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")

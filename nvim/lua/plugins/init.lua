@@ -41,6 +41,15 @@ return {
     end,
   },
 
+  {
+    "chikko80/error-lens.nvim",
+    event = "BufRead",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    opts = {},
+  },
+
   { "mg979/vim-visual-multi", lazy = false },
 
   -- { "mfussenegger/nvim-dap", lazy = false },
@@ -61,48 +70,6 @@ return {
   --     require("crates").setup()
   --   end,
   -- },
-
-  {
-    "David-Kunz/cmp-npm",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    ft = "json",
-    config = function()
-      require("cmp-npm").setup {
-        only_semantic_versions = false,
-      }
-    end,
-  },
-
-  {
-    "hrsh7th/nvim-cmp",
-    opts = function()
-      local opts = require "nvchad.configs.cmp"
-
-      opts.completion = {
-        completeopt = "menu,menuone,noselect,noinsert",
-      }
-
-      opts.sources = {
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "buffer" },
-        { name = "nvim_lua" },
-        { name = "path" },
-        { name = "crates" },
-        { name = "npm", keyword_length = 4 },
-      }
-
-      return opts
-    end,
-  },
-
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require "nvchad.configs.lspconfig"
-      require "configs.lspconfig"
-    end, -- Override to setup mason-lspconfig
-  },
 
   -- override plugin configs
   {
