@@ -36,8 +36,8 @@ read -p "Do you want to symlink NvChad custom config? It will delete your curren
 
 case "$choice" in
   y|Y )
-    rm -rf ~/.config/nvim/lua/custom
-    ln -s $PWD/nvchad_custom ~/.config/nvim/lua/custom
+    rm -rf ~/.config/nvim
+    ln -s $PWD/nvim ~/.config/nvim
     echo "NvChad custom config has been symlinked"
     ;;
   n|N ) echo "Skipped." ;;
