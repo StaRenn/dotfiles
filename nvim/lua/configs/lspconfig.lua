@@ -93,8 +93,8 @@ M.defaults = function()
   })
 
   vim.lsp.config("*", { capabilities = M.capabilities, on_init = M.on_init, on_attach = M.on_attach })
-  
-  for _, lsp in ipairs(servers) do 
+
+  for _, lsp in ipairs(servers) do
     vim.lsp.enable(lsp)
   end
 
@@ -112,7 +112,7 @@ M.defaults = function()
     },
   })
 
-  vim.lsp.enable("ts_ls")
+  vim.lsp.enable "ts_ls"
 
   -- rust_analyzer
   vim.lsp.config("rust_analyzer", {
@@ -130,7 +130,7 @@ M.defaults = function()
     },
   })
 
-  vim.lsp.enable("rust_analyzer")
+  vim.lsp.enable "rust_analyzer"
 
   -- jsonls with schemas
   vim.lsp.config("jsonls", {
@@ -178,7 +178,7 @@ M.defaults = function()
     },
   })
 
-  vim.lsp.enable("jsonls")
+  vim.lsp.enable "jsonls"
 
   -- lua_ls
   vim.lsp.config("lua_ls", {

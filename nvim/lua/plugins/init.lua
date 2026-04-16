@@ -49,6 +49,15 @@ return {
   --   end,
   -- },
 
+  -- {
+  --   "chikko80/error-lens.nvim",
+  --   event = "BufRead",
+  --   dependencies = {
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  --   opts = {},
+  -- },
+
   { "mg979/vim-visual-multi", lazy = false },
 
   -- { "mfussenegger/nvim-dap", lazy = false },
@@ -69,17 +78,6 @@ return {
   --     require("crates").setup()
   --   end,
   -- },
-
-  {
-    "David-Kunz/cmp-npm",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    ft = "json",
-    config = function()
-      require("cmp-npm").setup {
-        only_semantic_versions = false,
-      }
-    end,
-  },
 
   {
     "hrsh7th/nvim-cmp",
