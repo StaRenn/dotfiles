@@ -70,14 +70,6 @@ return {
   --     require("dapui").setup()
   --   end,
   -- },
-  --
-  -- {
-  --   "saecki/crates.nvim",
-  --   tag = "stable",
-  --   config = function()
-  --     require("crates").setup()
-  --   end,
-  -- },
 
   {
     "hrsh7th/nvim-cmp",
@@ -175,23 +167,6 @@ return {
       end
     end,
   },
-
-  -- {
-  --   "CopilotC-Nvim/CopilotChat.nvim",
-  --   branch = "main",
-  --   dependencies = {
-  --     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-  --     { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-  --   },
-  --   opts = {
-  --     debug = false, -- Enable debugging
-  --     window = {
-  --       width = 0.4,
-  --     },
-  --   },
-  --   lazy = false,
-  --   -- See Commands section for default commands if you want to lazy load on them
-  -- },
 
   {
     "HiPhish/rainbow-delimiters.nvim",
