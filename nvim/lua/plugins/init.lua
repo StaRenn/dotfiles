@@ -7,11 +7,19 @@ return {
     opts = require "configs.conform",
   },
 
+  {
+    "nvchad/base46",
+    build = function()
+      require("base46").load_all_highlights()
+    end,
+  },
+
   -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
+    event = "User FilePost",
     config = function()
-      require "configs.lspconfig"
+      require("configs.lspconfig").defaults()
     end,
   },
 
@@ -31,15 +39,15 @@ return {
 
   { "tpope/vim-repeat", lazy = false },
 
-  {
-    "zbirenbaum/copilot.lua",
-    lazy = false,
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup(overrides.copilot)
-    end,
-  },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   lazy = false,
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup(overrides.copilot)
+  --   end,
+  -- },
 
   { "mg979/vim-visual-multi", lazy = false },
 
@@ -75,33 +83,49 @@ return {
 
   {
     "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
+    dependencies = {
+      {
+
+        -- snippet plugin
+        "L3MON4D3/LuaSnip",
+        dependencies = "rafamadriz/friendly-snippets",
+        opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+        config = function(_, opts)
+          require("luasnip").config.set_config(opts)
+          require "nvchad.configs.luasnip"
+        end,
+      },
+
+      -- autopairing of (){}[] etc
+      {
+        "windwp/nvim-autopairs",
+        opts = {
+          fast_wrap = {},
+          disable_filetype = { "TelescopePrompt", "vim" },
+        },
+        config = function(_, opts)
+          require("nvim-autopairs").setup(opts)
+
+          -- setup cmp for autopairs
+          local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+          require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+        end,
+      },
+
+      -- cmp sources plugins
+      {
+        "saadparwaiz1/cmp_luasnip",
+        "hrsh7th/cmp-nvim-lua",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+
+        "https://codeberg.org/FelipeLema/cmp-async-path.git",
+      },
+    },
     opts = function()
-      local opts = require "nvchad.configs.cmp"
-
-      opts.completion = {
-        completeopt = "menu,menuone,noselect,noinsert",
-      }
-
-      opts.sources = {
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "buffer" },
-        { name = "nvim_lua" },
-        { name = "path" },
-        { name = "crates" },
-        { name = "npm", keyword_length = 4 },
-      }
-
-      return opts
+      return require "nvchad.configs.cmp"
     end,
-  },
-
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require "nvchad.configs.lspconfig"
-      require "configs.lspconfig"
-    end, -- Override to setup mason-lspconfig
   },
 
   -- override plugin configs
@@ -112,7 +136,12 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = overrides.treesitter,
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+    build = ":TSUpdate | TSInstallAll",
+    opts = function()
+      return require "configs.treesitter"
+    end,
   },
 
   {
@@ -149,22 +178,22 @@ return {
     end,
   },
 
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "main",
-    dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-    },
-    opts = {
-      debug = false, -- Enable debugging
-      window = {
-        width = 0.4,
-      },
-    },
-    lazy = false,
-    -- See Commands section for default commands if you want to lazy load on them
-  },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   branch = "main",
+  --   dependencies = {
+  --     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+  --     { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+  --   },
+  --   opts = {
+  --     debug = false, -- Enable debugging
+  --     window = {
+  --       width = 0.4,
+  --     },
+  --   },
+  --   lazy = false,
+  --   -- See Commands section for default commands if you want to lazy load on them
+  -- },
 
   {
     "HiPhish/rainbow-delimiters.nvim",

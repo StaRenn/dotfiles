@@ -1,28 +1,5 @@
 local M = {}
 
-M.treesitter = {
-  ensure_installed = {
-    "vim",
-    "lua",
-    "html",
-    "css",
-    "javascript",
-    "typescript",
-    "rust",
-    "tsx",
-    "c",
-    "markdown",
-    "markdown_inline",
-    "diff",
-  },
-  indent = {
-    enable = true,
-    -- disable = {
-    --   "python"
-    -- },
-  },
-}
-
 M.mason = {
   ensure_installed = {
     -- lua stuff

@@ -2,6 +2,10 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+-- Diagnostics navigation with float
+map("n", "]d", function() vim.diagnostic.goto_next { float = true } end, { desc = "Next diagnostic" })
+map("n", "[d", function() vim.diagnostic.goto_prev { float = true } end, { desc = "Prev diagnostic" })
+
 -- Telescope mappings
 map("n", "<leader>ff", "<cmd> Telescope find_files hidden=true <CR>", { desc = "Find files" })
 map("n", "<leader>gb", "<cmd> Telescope git_branches <CR>", { desc = "Git branches" })
@@ -14,24 +18,24 @@ map("n", "<A-k>", ":call vm#commands#add_cursor_up(0, v:count1) <CR>", { desc = 
 map("n", "<A-j>", ":call vm#commands#add_cursor_down(0, v:count1) <CR>", { desc = "Add cursor down" })
 
 -- CopilotChat mappings (normal mode)
-map("n", "<leader>ae", "<cmd>CopilotChatExplain<cr>", { desc = "CopilotChat - Explain code" })
-map(
-  "n",
-  "<leader>at",
-  ":CopilotChat Generate tests for current code, output only code, without explanation <cr>",
-  { desc = "CopilotChat - Generate tests" }
-)
-map(
-  "n",
-  "<leader>ac",
-  ":CopilotChat Review this code, how can i improve it? <cr>",
-  { desc = "CopilotChat - Code review" }
-)
-map("n", "<leader>ar", ":CopilotChat Refactor this code <cr>", { desc = "CopilotChat - Refactor" })
-map("n", "<leader>ad", ":CopilotChat Debug this code <cr>", { desc = "CopilotChat - Debug" })
+-- map("n", "<leader>ae", "<cmd>CopilotChatExplain<cr>", { desc = "CopilotChat - Explain code" })
+-- map(
+--   "n",
+--   "<leader>at",
+--   ":CopilotChat Generate tests for current code, output only code, without explanation <cr>",
+--   { desc = "CopilotChat - Generate tests" }
+-- )
+-- map(
+--   "n",
+--   "<leader>ac",
+--   ":CopilotChat Review this code, how can i improve it? <cr>",
+--   { desc = "CopilotChat - Code review" }
+-- )
+-- map("n", "<leader>ar", ":CopilotChat Refactor this code <cr>", { desc = "CopilotChat - Refactor" })
+-- map("n", "<leader>ad", ":CopilotChat Debug this code <cr>", { desc = "CopilotChat - Debug" })
 
 -- CopilotChat mappings (visual mode)
-map("x", "<leader>ax", ":CopilotChatInPlace<cr>", { desc = "CopilotChat - Run in-place code" })
+-- map("x", "<leader>ax", ":CopilotChatInPlace<cr>", { desc = "CopilotChat - Run in-place code" })
 
 -- DAP mappings
 map("n", "<leader>rd", ":RustLsp debuggables <CR> 1 <CR>", { desc = "Dap debuggables" })
